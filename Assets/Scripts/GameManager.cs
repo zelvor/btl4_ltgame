@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     public bool selectedPlayer1 = true;
     public int difficulty = 0; // 0 - easy, 1- medium,  2 - hard
 
-    public bool playwithAI = false;
+    public bool playWithAI = false;
     
     public string debugMessage;
     public bool player1Turn = true;
