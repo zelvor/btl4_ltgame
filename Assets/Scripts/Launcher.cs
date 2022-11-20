@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using ExitGames.Client.Photon;
 
+
 namespace Com.MyCompany.MyGame
 {
     public class Launcher : MonoBehaviourPunCallbacks
@@ -73,6 +74,9 @@ namespace Com.MyCompany.MyGame
         [SerializeField]
         private GameObject progressLabel;
         [SerializeField] private GameObject teamSelection;
+
+        [SerializeField] private Button team1Button;
+        [SerializeField] private Button team2Button;
 #endregion
 
 
@@ -147,6 +151,7 @@ namespace Com.MyCompany.MyGame
             Debug
                 .Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
             ShowTeamSelectionScreen();
+            PrepareTeamSelection();
         }
 
         public void ShowTeamSelectionScreen()
@@ -155,6 +160,34 @@ namespace Com.MyCompany.MyGame
             progressLabel.SetActive(false);
             controlPanel.SetActive(false);
             teamSelection.SetActive(true);
+        }
+
+        private void PrepareTeamSelection()
+        {
+            if(PhotonNetwork.CurrentRoom.PlayerCount > 1)
+            {
+                var firstPlayer = PhotonNetwork.CurrentRoom.GetPlayer(1);
+                if (firstPlayer.CustomProperties.ContainsKey("Team"))
+                {
+                    var occupiedTeam = firstPlayer.CustomProperties["Team"];
+                    Debug.Log("Team " + occupiedTeam + " is occupied");
+                    if (occupiedTeam.Equals(1))
+                    {
+                        team1Button.interactable = false;
+                    }
+                    else
+                    {
+                        team2Button.interactable = false;
+                    }
+                }
+            }
+        }
+
+        public void ChooseTeam(int team)
+        {
+            var teamProperties = new Hashtable();
+            teamProperties.Add("Team", team);
+            PhotonNetwork.LocalPlayer.SetCustomProperties(teamProperties);
         }
 
 

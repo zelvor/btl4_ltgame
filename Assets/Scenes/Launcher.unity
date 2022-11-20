@@ -751,7 +751,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 522636512}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1888233807}
+        m_TargetAssemblyTypeName: Com.MyCompany.MyGame.Launcher, Assembly-CSharp
+        m_MethodName: ChooseTeam
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &522636512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -797,6 +809,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8468243982134072412, guid: a07735d211def394e985ce6afcfa1702, type: 3}
+      propertyPath: team1Button
+      value: 
+      objectReference: {fileID: 522636511}
+    - target: {fileID: 8468243982134072412, guid: a07735d211def394e985ce6afcfa1702, type: 3}
+      propertyPath: team2Button
+      value: 
+      objectReference: {fileID: 1186850926}
     - target: {fileID: 8468243982134072412, guid: a07735d211def394e985ce6afcfa1702, type: 3}
       propertyPath: controlPanel
       value: 
@@ -1349,7 +1369,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1186850927}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1888233807}
+        m_TargetAssemblyTypeName: Com.MyCompany.MyGame.Launcher, Assembly-CSharp
+        m_MethodName: ChooseTeam
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1186850927
 MonoBehaviour:
   m_ObjectHideFlags: 0
