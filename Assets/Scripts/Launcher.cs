@@ -1,6 +1,8 @@
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
+using UnityEngine.UI;
+using ExitGames.Client.Photon;
 
 namespace Com.MyCompany.MyGame
 {
@@ -51,6 +53,7 @@ namespace Com.MyCompany.MyGame
         {
             progressLabel.SetActive(false);
             controlPanel.SetActive(true);
+            teamSelection.SetActive(false);
         }
 
 
@@ -69,6 +72,7 @@ namespace Com.MyCompany.MyGame
         ]
         [SerializeField]
         private GameObject progressLabel;
+        [SerializeField] private GameObject teamSelection;
 #endregion
 
 
@@ -83,6 +87,7 @@ namespace Com.MyCompany.MyGame
         {
             progressLabel.SetActive(true);
             controlPanel.SetActive(false);
+            teamSelection.SetActive(false);
 
             // we check if we are connected or not, we join if we are , else we initiate the connection to the server.
             if (PhotonNetwork.IsConnected)
@@ -117,6 +122,7 @@ namespace Com.MyCompany.MyGame
         {
             progressLabel.SetActive(false);
             controlPanel.SetActive(true);
+            teamSelection.SetActive(false);
             Debug
                 .LogWarningFormat("PUN Basics Tutorial/Launcher: OnDisconnected() was called by PUN with reason {0}",
                 cause);
@@ -140,6 +146,15 @@ namespace Com.MyCompany.MyGame
         {
             Debug
                 .Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
+            ShowTeamSelectionScreen();
+        }
+
+        public void ShowTeamSelectionScreen()
+        {
+            Debug.Log("Show Team Selection");
+            progressLabel.SetActive(false);
+            controlPanel.SetActive(false);
+            teamSelection.SetActive(true);
         }
 
 
