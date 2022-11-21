@@ -13,6 +13,6 @@ public class SceneChanger : MonoBehaviour {
 
     public void BoardScene()  
     {  
-        SceneManager.LoadScene("MultiplayerGameScene");
+        SceneManager.LoadScene("Temp");
     }
 }

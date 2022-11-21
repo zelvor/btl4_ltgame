@@ -43,7 +43,6 @@ public class MultiplayerGameManager : MonoBehaviour
         player2Ghost.SetActive(false);
         player1Ghost.transform.position = spawnLocations[3].transform.position;
         player1Ghost.SetActive(true);
-  
     }
 
     public void restartScene()
