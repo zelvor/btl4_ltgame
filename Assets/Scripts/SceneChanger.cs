@@ -9,4 +9,9 @@ public class SceneChanger : MonoBehaviour {
         //change scene to launcher
         SceneManager.LoadScene("Launcher");
     }
+
+    public void PlayGameScene()  
+    {  
+        SceneManager.LoadScene("MultiplayerGameScene");
+    }
 }

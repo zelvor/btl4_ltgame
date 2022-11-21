@@ -190,6 +190,9 @@ namespace Com.MyCompany.MyGame
             PhotonNetwork.LocalPlayer.SetCustomProperties(teamProperties);
         }
 
+        
+
+
 
 #endregion
 
