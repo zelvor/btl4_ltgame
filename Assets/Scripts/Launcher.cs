@@ -1,9 +1,8 @@
+using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.UI;
-using ExitGames.Client.Photon;
-
 
 namespace Com.MyCompany.MyGame
 {
@@ -73,10 +72,17 @@ namespace Com.MyCompany.MyGame
         ]
         [SerializeField]
         private GameObject progressLabel;
-        [SerializeField] private GameObject teamSelection;
 
-        [SerializeField] private Button team1Button;
-        [SerializeField] private Button team2Button;
+        [SerializeField]
+        private GameObject teamSelection;
+
+        [SerializeField]
+        private Button team1Button;
+
+        [SerializeField]
+        private Button team2Button;
+
+
 #endregion
 
 
@@ -152,6 +158,7 @@ namespace Com.MyCompany.MyGame
                 .Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
             ShowTeamSelectionScreen();
             PrepareTeamSelection();
+            StartGame();
         }
 
         public void ShowTeamSelectionScreen()
@@ -164,7 +171,7 @@ namespace Com.MyCompany.MyGame
 
         private void PrepareTeamSelection()
         {
-            if(PhotonNetwork.CurrentRoom.PlayerCount > 1)
+            if (PhotonNetwork.CurrentRoom.PlayerCount > 1)
             {
                 var firstPlayer = PhotonNetwork.CurrentRoom.GetPlayer(1);
                 if (firstPlayer.CustomProperties.ContainsKey("Team"))
@@ -183,16 +190,40 @@ namespace Com.MyCompany.MyGame
             }
         }
 
-        public void ChooseTeam(int team)
+        public void ChooseTeam(int teamInt)
         {
-            var teamProperties = new Hashtable();
-            teamProperties.Add("Team", team);
-            PhotonNetwork.LocalPlayer.SetCustomProperties(teamProperties);
+            if (PhotonNetwork.CurrentRoom.PlayerCount > 1)
+            {
+                var firstPlayer = PhotonNetwork.CurrentRoom.GetPlayer(1);
+                if (firstPlayer.CustomProperties.ContainsKey("Team"))
+                {
+                    var occupiedTeam = firstPlayer.CustomProperties["Team"];
+                    teamInt = (int) occupiedTeam == 1 ? 2 : 1;
+                }
+            }
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable {{"Team", teamInt}});
+            Debug.Log("Team " + teamInt + " is chosen");
         }
 
-        
+        public void StartGame()
+        {
+            //if both 2 players are chosen, load scene
+            if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
+            {
+                var firstPlayer = PhotonNetwork.CurrentRoom.GetPlayer(1);
+                var secondPlayer = PhotonNetwork.CurrentRoom.GetPlayer(2);
+                if (firstPlayer.CustomProperties.ContainsKey("Team") &&
+                    secondPlayer.CustomProperties.ContainsKey("Team"))
+                {
+                    var firstPlayerTeam = firstPlayer.CustomProperties["Team"];
+                    var secondPlayerTeam = secondPlayer.CustomProperties["Team"];
+                    PhotonNetwork.LoadLevel("MultiplayerGameScene");
+                }
+            }
 
 
+
+        }
 
 #endregion
 

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;  
 using UnityEngine;  
 using UnityEngine.SceneManagement;
+using Photon.Pun;
 
 public class SceneChanger : MonoBehaviour {  
     public void MultiplayerScene()  
@@ -10,7 +11,7 @@ public class SceneChanger : MonoBehaviour {
         SceneManager.LoadScene("Launcher");
     }
 
-    public void PlayGameScene()  
+    public void BoardScene()  
     {  
         SceneManager.LoadScene("MultiplayerGameScene");
     }
