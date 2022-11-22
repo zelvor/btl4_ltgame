@@ -42,6 +42,8 @@ MonoBehaviour:
   - SelectColumnRPC
   - RPC_UpdateText
   - RPC_UpdateText2
+  - InstantiateBoard
+  - InitBoard
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

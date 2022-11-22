@@ -19,17 +19,6 @@ public class Temp : MonoBehaviour
 
     private void Update()
     {
-        
-        if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
-        {
-            if (photonView.IsMine)
-            {
-                text.text = "1";
-            }
-            else
-            {
-                text.text = "2";
-            }
-        }
+       
     }
 }

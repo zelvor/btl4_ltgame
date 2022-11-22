@@ -51,6 +51,7 @@ namespace Com.MyCompany.MyGame
         /// </summary>
         void Start()
         {
+            PhotonNetwork.AutomaticallySyncScene = true;
             progressLabel.SetActive(false);
             controlPanel.SetActive(true);
             teamSelection.SetActive(false);
@@ -63,6 +64,7 @@ namespace Com.MyCompany.MyGame
 
 #region Public Fields
         [Tooltip("The Ui Panel to let the user enter name, connect and play")]
+
         [SerializeField]
         private GameObject controlPanel;
 
@@ -82,6 +84,8 @@ namespace Com.MyCompany.MyGame
         [SerializeField]
         private Button team2Button;
 
+        bool isConnecting;
+
 
 #endregion
 
@@ -95,6 +99,7 @@ namespace Com.MyCompany.MyGame
         /// </summary>
         public void Connect()
         {
+            isConnecting = true;
             progressLabel.SetActive(true);
             controlPanel.SetActive(false);
             teamSelection.SetActive(false);
@@ -150,6 +155,7 @@ namespace Com.MyCompany.MyGame
             PhotonNetwork
                 .CreateRoom(null,
                 new RoomOptions { MaxPlayers = maxPlayersPerRoom });
+            
         }
 
         public override void OnJoinedRoom()
@@ -158,7 +164,15 @@ namespace Com.MyCompany.MyGame
                 .Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
             ShowTeamSelectionScreen();
             PrepareTeamSelection();
-            StartGame();
+            if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
+            {
+                PhotonNetwork.LoadLevel("MultiplayerGameScene");
+            }
+            if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
+            {
+                PhotonNetwork.LoadLevel("MultiplayerGameScene");
+            }
+            
         }
 
         public void ShowTeamSelectionScreen()
@@ -201,29 +215,12 @@ namespace Com.MyCompany.MyGame
                     teamInt = (int) occupiedTeam == 1 ? 2 : 1;
                 }
             }
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable {{"Team", teamInt}});
+            PhotonNetwork
+                .LocalPlayer
+                .SetCustomProperties(new Hashtable { { "Team", teamInt } });
             Debug.Log("Team " + teamInt + " is chosen");
         }
 
-        public void StartGame()
-        {
-            //if both 2 players are chosen, load scene
-            if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
-            {
-                var firstPlayer = PhotonNetwork.CurrentRoom.GetPlayer(1);
-                var secondPlayer = PhotonNetwork.CurrentRoom.GetPlayer(2);
-                if (firstPlayer.CustomProperties.ContainsKey("Team") &&
-                    secondPlayer.CustomProperties.ContainsKey("Team"))
-                {
-                    var firstPlayerTeam = firstPlayer.CustomProperties["Team"];
-                    var secondPlayerTeam = secondPlayer.CustomProperties["Team"];
-                    PhotonNetwork.LoadLevel("MultiplayerGameScene");
-                }
-            }
-
-
-
-        }
 
 #endregion
 

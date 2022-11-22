@@ -7,13 +7,13 @@ public class MultiplayerInputs : MonoBehaviour
     public int column;
     public MultiplayerGameManager gm;
 
-    private void OnMouseDown()
-    {
-        gm.selectColumn(column);
-    }
+    // private void OnMouseDown()
+    // {
+    //     gm.selectColumn(column);
+    // }
 
-    private void OnMouseOver()
-    {
-        gm.hoverColumn(column);
-    }
+    // private void OnMouseOver()
+    // {
+    //     gm.hoverColumn(column);
+    // }
 }
