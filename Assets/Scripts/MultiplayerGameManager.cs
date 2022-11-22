@@ -18,6 +18,7 @@ public class MultiplayerGameManager : MonoBehaviour
     public const int row_count = 6;
 
     public const int column_count = 7;
+
     public GameObject player1;
 
     public GameObject player2;
@@ -35,7 +36,6 @@ public class MultiplayerGameManager : MonoBehaviour
 
     public GameObject fallingPiece;
 
-
     public GameObject board;
 
     public GameObject[] spawnLocations;
@@ -43,7 +43,6 @@ public class MultiplayerGameManager : MonoBehaviour
     public bool isPlayer1Turn = true;
 
     public bool gameOver = false;
-
 
     private void Start()
     {
@@ -55,13 +54,20 @@ public class MultiplayerGameManager : MonoBehaviour
     {
         if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
         {
-           photonView.RPC("InitBoard", RpcTarget.All);
+            photonView.RPC("InitBoard", RpcTarget.All);
         }
     }
 
     [PunRPC]
-    private void InitBoard(){
-        //setActive board
-        board.SetActive(true);
+    private void InitBoard()
+    {
+        PhotonNetwork.Instantiate("Board", new Vector3(0.524f, 0.411f, 0), Quaternion.identity);
+    }
+
+    [PunRPC]
+    public void hoverColumn(int column)
+    {
+        
+        
     }
 }

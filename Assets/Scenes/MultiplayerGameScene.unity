@@ -1733,7 +1733,7 @@ MonoBehaviour:
   prefixField: -1
   Synchronization: 3
   OwnershipTransfer: 0
-  observableSearch: 0
+  observableSearch: 2
   ObservedComponents:
   - {fileID: 1433223336}
   - {fileID: 1433223338}
@@ -2247,13 +2247,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1121172378146461782, guid: 38c38e273456b3049be63084e9892369, type: 3}
+      propertyPath: sceneViewId
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4819137626741684763, guid: 38c38e273456b3049be63084e9892369, type: 3}
       propertyPath: m_Name
       value: Board
-      objectReference: {fileID: 0}
-    - target: {fileID: 4819137626741684763, guid: 38c38e273456b3049be63084e9892369, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5308288825332097185, guid: 38c38e273456b3049be63084e9892369, type: 3}
       propertyPath: m_RootOrder
