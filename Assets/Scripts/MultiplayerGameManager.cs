@@ -36,7 +36,7 @@ public class MultiplayerGameManager : MonoBehaviour
 
     public GameObject fallingPiece;
 
-    public GameObject board;
+    // public GameObject board;
 
     public GameObject[] spawnLocations;
 
@@ -58,16 +58,22 @@ public class MultiplayerGameManager : MonoBehaviour
         }
     }
 
+    public void exitToMenu()
+    {
+        PhotonNetwork.LeaveRoom();
+        SceneManager.LoadScene("Menu");
+    }
+
     [PunRPC]
     private void NewBoard()
     {
-        boardState = new int[row_count, column_count];
-        objects = new GameObject[row_count, column_count];
-        isPlayer1Turn = true;
-        gameOver = false;
-        player1Ghost.SetActive(true);
-        player1Ghost.transform.position = spawnLocations[3].transform.position;
-        player2Ghost.SetActive(false);
+        // boardState = new int[row_count, column_count];
+        // objects = new GameObject[row_count, column_count];
+        // isPlayer1Turn = true;
+        // gameOver = false;
+        // player1Ghost.SetActive(true);
+        // player1Ghost.transform.position = spawnLocations[3].transform.position;
+        // player2Ghost.SetActive(false);
 
         //master client, isPlayer1Turn = true
         if (PhotonNetwork.IsMasterClient)
@@ -265,6 +271,13 @@ public class MultiplayerGameManager : MonoBehaviour
             .Instantiate("Board",
             new Vector3(0.524f, 0.411f, 0),
             Quaternion.identity);
+                    boardState = new int[row_count, column_count];
+        objects = new GameObject[row_count, column_count];
+        isPlayer1Turn = true;
+        gameOver = false;
+        player1Ghost.SetActive(true);
+        player1Ghost.transform.position = spawnLocations[3].transform.position;
+        player2Ghost.SetActive(false);
     }
 
     [PunRPC]
