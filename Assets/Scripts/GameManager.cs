@@ -9,8 +9,6 @@ public class GameManager : MonoBehaviour
     public bool selectedPlayer1 = true;
     public int difficulty = 0; // 0 - easy, 1- medium,  2 - hard
 
-    public bool playWithAI = false;
-    
     public string debugMessage;
     public bool player1Turn = true;
     public bool gameOver = false;
@@ -69,6 +67,8 @@ public class GameManager : MonoBehaviour
     public void exitToMenu()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        //save game state for next time, continue button
+    
     }
 
     public IEnumerator aiTurn()
