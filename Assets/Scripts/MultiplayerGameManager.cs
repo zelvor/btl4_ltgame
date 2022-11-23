@@ -40,9 +40,11 @@ public class MultiplayerGameManager : MonoBehaviour
 
     public GameObject[] spawnLocations;
 
-    public bool isPlayer1Turn;
+    public bool isPlayer1Turn = true;
 
-    public bool isPlayer1;
+    public bool isPlayer1 = false;
+
+    public bool isPlayer2 = false;
 
     public bool gameOver = false;
 
@@ -54,7 +56,6 @@ public class MultiplayerGameManager : MonoBehaviour
             photonView.RPC("InitBoard", RpcTarget.All);
             photonView.RPC("NewBoard", RpcTarget.All);
         }
-
     }
 
     [PunRPC]
@@ -71,22 +72,33 @@ public class MultiplayerGameManager : MonoBehaviour
         //master client, isPlayer1Turn = true
         if (PhotonNetwork.IsMasterClient)
         {
+            Debug.Log("Master client");
             isPlayer1 = true;
+            isPlayer2 = false;
         }
         else
         {
+            Debug.Log("Not master client");
+            isPlayer2 = true;
             isPlayer1 = false;
         }
+
+        Debug.Log("isPlayer1: " + isPlayer1);
+        Debug.Log("isPlayer2: " + isPlayer2);
     }
 
-    private void player1TurnHover(int column){
+    private void player1TurnHover(int column)
+    {
         player1Ghost.SetActive(true);
-        player1Ghost.transform.position = spawnLocations[column].transform.position;
+        player1Ghost.transform.position =
+            spawnLocations[column].transform.position;
     }
 
-    private void player2TurnHover(int column){
+    private void player2TurnHover(int column)
+    {
         player2Ghost.SetActive(true);
-        player2Ghost.transform.position = spawnLocations[column].transform.position;
+        player2Ghost.transform.position =
+            spawnLocations[column].transform.position;
     }
 
     public void hoverColumn(int column)
@@ -100,38 +112,57 @@ public class MultiplayerGameManager : MonoBehaviour
             )
         )
         {
-            if (isPlayer1 && isPlayer1Turn){
-                player1TurnHover(column);
-            } else if (!isPlayer1 && !isPlayer1Turn){
-                player2TurnHover(column);
+            if (isPlayer1 && isPlayer1Turn)
+            {
+                player1TurnHover (column);
+            }
+            else if (isPlayer2 && !isPlayer1Turn)
+            {
+                player2TurnHover (column);
             }
         }
     }
 
-    private void player1TurnSelect(int column){
+    private void player1TurnSelect(int column)
+    {
         player1Ghost.SetActive(false);
-        fallingPiece = PhotonNetwork.Instantiate("Player1", spawnLocations[column].transform.position, Quaternion.identity);
-        fallingPiece.GetComponent<Rigidbody>().velocity = new Vector3(0, 0.1f, 0);
+        fallingPiece =
+            PhotonNetwork
+                .Instantiate("Player1",
+                spawnLocations[column].transform.position,
+                Quaternion.Euler(new Vector3(90, 0, 0)));
+        fallingPiece.GetComponent<Rigidbody>().velocity =
+            new Vector3(0, 0.1f, 0);
         objects[lastRow, column] = fallingPiece;
-        isPlayer1Turn = false;
     }
 
-    private void player2TurnSelect(int column){
+    private void player2TurnSelect(int column)
+    {
         player2Ghost.SetActive(false);
-        fallingPiece = PhotonNetwork.Instantiate("Player2", spawnLocations[column].transform.position, Quaternion.identity);
-        fallingPiece.GetComponent<Rigidbody>().velocity = new Vector3(0, 0.1f, 0);
+        fallingPiece =
+            PhotonNetwork
+                .Instantiate("Player2",
+                spawnLocations[column].transform.position,
+                Quaternion.Euler(new Vector3(90, 0, 0)));
+        fallingPiece.GetComponent<Rigidbody>().velocity =
+            new Vector3(0, 0.1f, 0);
         objects[lastRow, column] = fallingPiece;
-        isPlayer1Turn = true;
     }
 
-    public void selectColumn(int column){
-        if (isPlayer1 && isPlayer1Turn){
-            player1TurnSelect(column);
-        } else if (!isPlayer1 && !isPlayer1Turn){
-            player2TurnSelect(column);
+    public void selectColumn(int column)
+    {
+        Debug.Log("IsPlayer1Turn: " + isPlayer1Turn);
+        if (isPlayer1 && isPlayer1Turn)
+        {
+            player1TurnSelect (column);
+            photonView.RPC("SwitchTurn", RpcTarget.All);
+        }
+        else if (isPlayer2 && !isPlayer1Turn)
+        {
+            player2TurnSelect (column);
+            photonView.RPC("SwitchTurn", RpcTarget.All);
         }
     }
-
 
     [PunRPC]
     private void InitBoard()
@@ -142,4 +173,9 @@ public class MultiplayerGameManager : MonoBehaviour
             Quaternion.identity);
     }
 
+    [PunRPC]
+    private void SwitchTurn()
+    {
+        isPlayer1Turn = !isPlayer1Turn;
+    }
 }

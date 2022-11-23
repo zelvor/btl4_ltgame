@@ -322,6 +322,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2734681134383457613, guid: 91e157c932de9e14cb9cefba9e10a00b, type: 3}
+      propertyPath: sceneViewId
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7465209128483703796, guid: 91e157c932de9e14cb9cefba9e10a00b, type: 3}
       propertyPath: m_Name
       value: Player2Ghost
@@ -542,6 +546,10 @@ PrefabInstance:
     - target: {fileID: 3184998809728670673, guid: a62a6fb9eccfe2044b61927a05f8640a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3514156005416033459, guid: a62a6fb9eccfe2044b61927a05f8640a, type: 3}
+      propertyPath: sceneViewId
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3150790170920537647, guid: a62a6fb9eccfe2044b61927a05f8640a, type: 3}

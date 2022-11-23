@@ -1691,8 +1691,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb5618bf272e69842aac5359227bfdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player1: {fileID: 2844220142577713515, guid: 61203e1e6979d2f4ca68664d1ec194d7, type: 3}
-  player2: {fileID: 7465209128483703796, guid: 2fe1f93a0bd307247a104aa7947ce708, type: 3}
+  player1: {fileID: 6339336145847127171, guid: 61203e1e6979d2f4ca68664d1ec194d7, type: 3}
+  player2: {fileID: 8878299092816226217, guid: 2fe1f93a0bd307247a104aa7947ce708, type: 3}
   color1: {fileID: 2100000, guid: 0184e8dc23683cb44b3f06f9dd427a56, type: 2}
   winColor1: {fileID: 2100000, guid: 435e7ba8f92632344a1d362497d1db65, type: 2}
   color2: {fileID: 2100000, guid: 8d6233f05824fcd43ae5e42b770b21bc, type: 2}
@@ -1711,6 +1711,7 @@ MonoBehaviour:
   - {fileID: 1335926235}
   isPlayer1Turn: 1
   isPlayer1: 0
+  isPlayer2: 0
   gameOver: 0
 --- !u!114 &1433223336
 MonoBehaviour:
