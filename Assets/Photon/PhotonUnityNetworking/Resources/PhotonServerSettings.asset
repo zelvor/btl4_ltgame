@@ -50,6 +50,9 @@ MonoBehaviour:
   - player2Turn
   - selectColumn
   - SwitchTurn
+  - BlinkGameObject
+  - checkGameOver
+  - updateBoard
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

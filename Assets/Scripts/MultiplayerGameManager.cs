@@ -65,7 +65,7 @@ public class MultiplayerGameManager : MonoBehaviour
         objects = new GameObject[row_count, column_count];
         isPlayer1Turn = true;
         gameOver = false;
-        player1Ghost.SetActive(false);
+        player1Ghost.SetActive(true);
         player1Ghost.transform.position = spawnLocations[3].transform.position;
         player2Ghost.SetActive(false);
 
@@ -126,6 +126,7 @@ public class MultiplayerGameManager : MonoBehaviour
     private void player1TurnSelect(int column)
     {
         player1Ghost.SetActive(false);
+        player2Ghost.SetActive(false);
         fallingPiece =
             PhotonNetwork
                 .Instantiate("Player1",
@@ -134,10 +135,12 @@ public class MultiplayerGameManager : MonoBehaviour
         fallingPiece.GetComponent<Rigidbody>().velocity =
             new Vector3(0, 0.1f, 0);
         objects[lastRow, column] = fallingPiece;
+        photonView.RPC("checkGameOver", RpcTarget.All);
     }
 
     private void player2TurnSelect(int column)
     {
+        player1Ghost.SetActive(false);
         player2Ghost.SetActive(false);
         fallingPiece =
             PhotonNetwork
@@ -147,21 +150,112 @@ public class MultiplayerGameManager : MonoBehaviour
         fallingPiece.GetComponent<Rigidbody>().velocity =
             new Vector3(0, 0.1f, 0);
         objects[lastRow, column] = fallingPiece;
+        photonView.RPC("checkGameOver", RpcTarget.All);
     }
 
     public void selectColumn(int column)
     {
-        Debug.Log("IsPlayer1Turn: " + isPlayer1Turn);
-        if (isPlayer1 && isPlayer1Turn)
+        if (
+            !gameOver &&
+            (
+            fallingPiece == null ||
+            fallingPiece.GetComponent<Rigidbody>().velocity == Vector3.zero
+            )
+        )
         {
-            player1TurnSelect (column);
-            photonView.RPC("SwitchTurn", RpcTarget.All);
+            if (updateBoard(column))
+            {
+                Debug.Log("IsPlayer1Turn: " + isPlayer1Turn);
+                if (isPlayer1 && isPlayer1Turn)
+                {
+                    player1TurnSelect (column);
+                    photonView.RPC("SwitchTurn", RpcTarget.All);
+                }
+                else if (isPlayer2 && !isPlayer1Turn)
+                {
+                    player2TurnSelect (column);
+                    photonView.RPC("SwitchTurn", RpcTarget.All);
+                }
+            }
         }
-        else if (isPlayer2 && !isPlayer1Turn)
+    }
+
+    bool isDraw(int[,] board)
+    {
+        for (int i = 0; i < column_count; i++)
+        if (board[0, i] == 0) return false;
+        return true;
+    }
+    bool updateBoard(int column)
+    {
+        for (int i = row_count - 1; i >= 0; i--)
         {
-            player2TurnSelect (column);
-            photonView.RPC("SwitchTurn", RpcTarget.All);
+            if (boardState[i, column] == 0)
+            {
+                boardState[i, column] = isPlayer1Turn ? 1 : 2;
+                lastRow = i;
+                Debug.Log("Piece fitted in (" + i + ", " + column + ")");
+                return true;
+            }
         }
+        Debug.LogWarning("Column " + column + " is full!");
+        return false;
+    }
+
+    bool winningMove(int[,] board, int player, bool realWin)
+    {
+        //horizontal
+        for (int c = 0; c < column_count - 3; c++)
+        for (int r = 0; r < row_count; r++)
+        if (
+            board[r, c] == player &&
+            board[r, c + 1] == player &&
+            board[r, c + 2] == player &&
+            board[r, c + 3] == player
+        )
+        {
+            return true;
+        }
+
+        //vertical
+        for (int c = 0; c < column_count; c++)
+        for (int r = 0; r < row_count - 3; r++)
+        if (
+            board[r, c] == player &&
+            board[r + 1, c] == player &&
+            board[r + 2, c] == player &&
+            board[r + 3, c] == player
+        )
+        {
+            return true;
+        }
+
+        // y=x
+        for (int c = 0; c < column_count - 3; c++)
+        for (int r = 0; r < row_count - 3; r++)
+        if (
+            board[r, c] == player &&
+            board[r + 1, c + 1] == player &&
+            board[r + 2, c + 2] == player &&
+            board[r + 3, c + 3] == player
+        )
+        {
+            return true;
+        }
+
+        // y=-x
+        for (int c = 0; c < column_count - 3; c++)
+        for (int r = 3; r < row_count; r++)
+        if (
+            board[r, c] == player &&
+            board[r - 1, c + 1] == player &&
+            board[r - 2, c + 2] == player &&
+            board[r - 3, c + 3] == player
+        )
+        {
+            return true;
+        }
+        return false;
     }
 
     [PunRPC]
@@ -177,5 +271,21 @@ public class MultiplayerGameManager : MonoBehaviour
     private void SwitchTurn()
     {
         isPlayer1Turn = !isPlayer1Turn;
+        player1Ghost.SetActive(false);
+        player2Ghost.SetActive(false);
+    }
+
+    [PunRPC]
+    private void checkGameOver()
+    {
+        if (winningMove(boardState, 1, true) || winningMove(boardState, 2, true)
+        )
+        {
+            gameOver = true;
+        }
+        else if (isDraw(boardState))
+        {
+            gameOver = true;
+        }
     }
 }
